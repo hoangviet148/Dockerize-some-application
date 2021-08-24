@@ -1,0 +1,4 @@
+/Express-mongo-redis/node-modules
+/Express-mongo-redis/.docker/data/*
+/Mysql-replication/master/data/*
+/Mysql-replication/slave/data/*

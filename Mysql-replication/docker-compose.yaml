@@ -1,0 +1,49 @@
+version: '2.2'
+
+services: 
+    php-apache-environment:
+        container_name: php-apache
+        build: 
+            context: ./php
+            dockerfile: Dockerfile
+        depends_on: 
+            - mysql_master
+        volumes: 
+            - ./php/src:/var/www/html
+        networks: 
+            - overlay
+        ports: 
+            - 8000:80
+    mysql_master:
+        container_name: mysql_master
+        image: mysql:5.7
+        restart: "no"
+        env_file: 
+            - ./master/mysql_master.env
+        volumes: 
+            - ./master/create-table.sql:/usr/local/create_table.sql
+            - ./master/data:/var/lib/mysql
+            - ./master/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+        networks: 
+            - overlay
+        ports: 
+            - "4406:3306"
+    mysql_slave:
+        container_name: mysql_slave
+        image: mysql:5.7
+        restart: "no"
+        depends_on: 
+            - mysql_master
+        env_file: 
+            - ./slave/mysql_slave.env
+        volumes: 
+            - ./slave/data:/var/lib/mysql
+            - ./slave/conf/mysql.conf.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+        networks: 
+            - overlay
+        ports: 
+            - "5506:3306"
+
+# TẠO NETWORK
+networks:      
+    overlay:

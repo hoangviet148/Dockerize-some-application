@@ -1,0 +1,21 @@
+# base image
+FROM ubuntu:20.04
+
+# install apache and php
+RUN apt-get update -y
+RUN apt-get install apache2 \
+    php7.2 \
+    apt-utils \
+    libapache2-mod-php -y
+
+# setup work space
+WORKDIR /var/www/html
+
+# copy code from code folder to image
+ADD ./code /var/www/html/
+
+# start apache2
+CMD apachectl -D FOREGROUND 
+
+EXPOSE 80 443
+
