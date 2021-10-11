@@ -1,0 +1,51 @@
+version: "3"
+services:
+  bareos-dir:
+    image: barcus/bareos-director:18-ubuntu-mysql
+    volumes:
+      - ./bareos-config:/etc/bareos
+      - ./bareos-data:/var/lib/bareos #required for MyCatalog backup
+    environment:
+      - .env
+    depends_on: 
+      - bareos-db
+
+  bareos-sd:
+    image: barcus/bareos-storage:latest
+    ports:
+      - 9103:9103
+    volumes:
+      - ./bareos-config:/etc/bareos
+      - ./bareos-bkp-volume:/var/lib/bareos/storage
+    environment:
+      - BAREOS_SD_PASSWORD=hoang@123
+
+  bareos-fd:
+    image: barcus/bareos-client:latest
+    volumes:
+      - ./bareos-config:/etc/bareos
+      - ./bareos-data:/var/lib/bareos-director #required for MyCatalog backup
+    environment:
+      - BAREOS_FD_PASSWORD=hoang@123
+      - FORCE_ROOT=false
+
+  bareos-webui:
+    image: barcus/bareos-webui:latest
+    ports:
+      - 8080:80
+    environment:
+      - BAREOS_DIR_HOST=bareos-dir
+      - SERVER_STATS=yes #optional enable apache server statistics
+    volumes:
+      - ./bareos-config:/etc/bareos-webui
+
+  bareos-db:
+    image: mysql:5.6
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=hoang@123
+
+  smtpd:
+    image: namshi/smtp
+ 
