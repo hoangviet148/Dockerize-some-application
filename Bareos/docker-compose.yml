@@ -1,0 +1,16 @@
+version: "2"
+
+services: 
+    bareos:
+        container_name: bareos
+        image: bareos:v1
+        ports: 
+            - "8080:80"
+        restart: unless-stopped
+        command: ["sleep","infinity"]
+
+    mysql:
+        container_name: mysql-5.7
+        image: ubuntu:18.04
+        restart: unless-stopped
+        command: ["sleep","infinity"]
