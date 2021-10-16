@@ -3,11 +3,12 @@ FROM ubuntu:18.04
 WORKDIR /app
 
 COPY . .
-RUN ls /app/scripts
 RUN apt-get update -y
 RUN apt-get install wget \
                     apt-utils \
                     net-tools \
+                    nano \
+                    openssh-server \
                     gawk \
                     libcap2-bin \
                     libjansson4 \
@@ -15,9 +16,9 @@ RUN apt-get install wget \
                     libmysqlclient-dev \
                     lsof \
                     bsd-mailx \
-                    mailutils \
-                    openssh-server \
-                    dbconfig-common  -y
+                    mailutils -y
+# RUN apt-get install mysql-server-5.7 -y
 RUN bash /app/scripts/deb-install.sh
-# RUN bash /app/scripts/install-bareos.sh
+RUN bash /app/scripts/install-bareos-fd2.sh
+
 CMD ["sleep","infinity"]

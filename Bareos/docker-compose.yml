@@ -4,7 +4,9 @@ services:
     bareos:
         hostname: bareos
         container_name: bareos
-        image: bareos:v1
+        build: 
+            context: ./Bareos
+            dockerfile: Dockerfile
         volumes:
             - ./data/bareos-config:/etc/bareos
             - ./data/bareos-data:/var/lib/bareos
@@ -14,14 +16,15 @@ services:
         restart: unless-stopped
         command: ["sleep","infinity"]
 
-    mysql:
-        hostname: mysql
-        container_name: mysql-5.7
-        image: ubuntu:18.04
+    bareos-client2:
+        hostname: bareos-client2
+        container_name: bareos-client2
+        build: 
+            context: ./Bareos-fd2
+            dockerfile: Dockerfile
         volumes:
             - ./data/mysql-data:/var/lib/mysql
         ports:
-            - "3307:3306"
             - "7822:22"
         restart: unless-stopped
         command: ["sleep","infinity"]

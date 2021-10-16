@@ -12,4 +12,3 @@ cd /app/bareos-deb
 # dpkg -i bareos-bconsole_18.2.5-144.1_amd64.deb 
 # dpkg -i bareos-client_18.2.5-144.1_amd64.deb
 # dpkg -i bareos_18.2.5-144.1_amd64.deb
-# dpkg -i --force-all *.deb
