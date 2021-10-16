@@ -7,6 +7,7 @@ RUN ls /app/scripts
 RUN apt-get update -y
 RUN apt-get install wget \
                     apt-utils \
+                    net-tools \
                     gawk \
                     libcap2-bin \
                     libjansson4 \
@@ -15,6 +16,7 @@ RUN apt-get install wget \
                     lsof \
                     bsd-mailx \
                     mailutils \
+                    openssh-server \
                     dbconfig-common  -y
 RUN bash /app/scripts/deb-install.sh
 # RUN bash /app/scripts/install-bareos.sh
